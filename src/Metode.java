@@ -108,5 +108,7 @@ public class Metode {
                 //oceni rad
             }
 
-        }    }
+        }
+            Metode.glavniMeni();
+    }
 }

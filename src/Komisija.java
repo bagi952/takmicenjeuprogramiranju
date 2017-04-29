@@ -35,7 +35,7 @@ public class Komisija {
             baza = DB.getInstance();
             Connection con = (Connection) baza.getConnection();
             Statement stmt = (Statement) con.createStatement();
-            String upit = "SElECT * FROM takmicar WHERE ime='"+ime+"' AND pass='"+pass+"'";
+            String upit = "SElECT * FROM komisija WHERE ime='"+ime+"' AND pass='"+pass+"'";
             ResultSet rs = stmt.executeQuery(upit);
 
             if(rs.next()){
