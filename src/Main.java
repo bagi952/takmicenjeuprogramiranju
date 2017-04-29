@@ -3,19 +3,21 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        Korisnik kor = new Korisnik();
-        // DB con = DB.getInstance();
         int izbor;
         Scanner scan = new Scanner(System.in);
         Metode.glavniMeni();
         while ((izbor = scan.nextInt()) != 0) {
             if (izbor == 1) {
-                System.out.println("Za takmicara unesite 1\n" + "Za Komisiju 2\n" + "Za Administratora 3\n\n");
-                kor.login();
+                System.out.println("Unesite ime: ");
+                String ime = scan.next();
+                System.out.println("Unesite pass");
+                String pass = scan.next();
+               Metode.login(ime, pass);
 
             }
             if (izbor == 2) {
-
+                //System.out.println("//PROGRAMMING IN PROCESS...\nchoose 0 or 1");
+                Metode.listAllStudents();
             }
 
         }

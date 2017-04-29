@@ -13,7 +13,7 @@ public class DB {
             Class.forName("com.mysql.jdbc.Driver");
             for (int i = 0; i < MAX_CON; i++) {
                 bafer[i] = DriverManager.getConnection(
-                        "jdbc:mysql://cane:3306/takmicenje", "root", "");
+                        "jdbc:mysql://localhost:3306/takmicenje", "root", "");
                 //System.out.println("konekcija uspesnaaa");
 
             }
