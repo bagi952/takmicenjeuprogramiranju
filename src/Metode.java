@@ -4,7 +4,6 @@ import com.mysql.jdbc.Statement;
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Metode {
