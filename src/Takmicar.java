@@ -14,7 +14,7 @@ public class Takmicar {
     DB baza;
     private String putanjaDoFajla;
     private int id;
-    private int ocenjen;
+    private String ocenjen;
     private int kvalitetKoda;
     private int tacnost;
     private int opstiUtisak;
@@ -50,11 +50,11 @@ public class Takmicar {
         this.id = id;
     }
 
-    public int getOcenjen() {
+    public String getOcenjen() {
         return ocenjen;
     }
 
-    public void setOcenjen(int ocenjen) {
+    public void setOcenjen(String ocenjen) {
         this.ocenjen = ocenjen;
     }
 
@@ -91,7 +91,10 @@ public class Takmicar {
     }
 
 
-
+    public Takmicar(String ime)
+    {
+        this.ime = ime;
+    }
 
 
     public Takmicar(String ime, String pass)
@@ -163,7 +166,7 @@ public class Takmicar {
                 this.setKvalitetKoda(rs.getInt("kvalitetKoda"));
                 this.setOcena(rs.getInt("ocena"));
                 this.setOpstiUtisak(rs.getInt("opstiUtisak"));
-                this.setOcenjen(rs.getInt("ocenjen"));
+                this.setOcenjen(rs.getString("ocenjen"));
                 this.setTacnost(rs.getInt("tacnost"));
 
                 if(rs.getString("ime").equals(this.ime))

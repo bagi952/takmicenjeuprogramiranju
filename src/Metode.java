@@ -1,13 +1,19 @@
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Metode {
     static Scanner scan = new Scanner(System.in);
     private static String putanjaZaTakmicara;
     private static DB baza;
+    private static Connection con = null;
+    private static Statement stmt = null;
+    private static String upit;
 
     public static void glavniMeni() {
 
@@ -73,8 +79,8 @@ public class Metode {
         try
         {
             baza = DB.getInstance();
-            Connection con = (Connection) baza.getConnection();
-            Statement stmt = (Statement) con.createStatement();
+            con = (Connection) baza.getConnection();
+            stmt = (Statement) con.createStatement();
             String upit = "SElECT * FROM takmicar";
             ResultSet rs = stmt.executeQuery(upit);
             while(rs.next())
@@ -91,6 +97,9 @@ public class Metode {
             System.out.println("Error...@" + e.getMessage());
 
         }
+        finally {
+            baza.putConnection(con);
+        }
     }
 
     public static void ekranKomisije(Komisija komisija) {
@@ -101,14 +110,102 @@ public class Metode {
         {
             if(izbor == 1)
             {
-                //spisak radova
+                try
+                {
+                File folder = new File("zadaci");
+
+                for(int i = 0;i<folder.listFiles().length;i++)
+                {
+                    if(!folder.listFiles()[i].isDirectory())
+                        System.out.println((i+1)+". "+folder.listFiles()[i].getName());
+                }
+                    System.out.println("\n");
+
+                }
+                catch(Exception e)
+                {
+                    System.out.println("Error: " + e.getMessage());
+                }
+                System.out.println("-ODJAVI SE - 0\n-PRIKAZI SPISAK RADOVA 1\n-OCENI RAD 2");
+
             }
             if(izbor == 2)
             {
-                //oceni rad
+                System.out.println("Unesite ime takmicara kog zelite da ocenite: ");
+                Takmicar ocenjenTakmicar = new Takmicar(scan.next());
+                String naziv;
+                FileInputStream fis = null;
+
+                try
+                {
+                    File folder = new File("zadaci");
+
+
+                    for(int i = 0;i<folder.listFiles().length;i++)
+                    {
+                        naziv =  folder.listFiles()[i].getName().substring(0,folder.listFiles()[i].getName().length()-4);
+                        System.out.println("------"+naziv+"------");
+                        if(!folder.listFiles()[i].isDirectory() && naziv.equals(ocenjenTakmicar.getIme()))
+                        {
+
+                            fis = new FileInputStream("zadaci/"+ocenjenTakmicar.getIme()+".txt");
+                            int c;
+                            while((c=fis.read())!= -1)
+                            {
+                                System.out.print((char)c);
+                            }
+                                System.out.println("Unesite ocenu za kvalitet koda: ");
+                                ocenjenTakmicar.setKvalitetKoda(scan.nextInt());
+                            System.out.println("Unesite ocenu za tacnost koda: ");
+                            ocenjenTakmicar.setTacnost(scan.nextInt());
+                            System.out.println("Unesite ocenu za opsti utisak rada: ");
+                            ocenjenTakmicar.setOpstiUtisak(scan.nextInt());
+                            ocenjenTakmicar.setOcena(Math.round((ocenjenTakmicar.getKvalitetKoda()+ocenjenTakmicar.getOpstiUtisak()+ocenjenTakmicar.getTacnost())/3)) ;
+
+
+                            Metode.oceniRad(ocenjenTakmicar);
+
+                            break;
+                        }
+
+                    }
+                    System.out.println("\n");
+
+                }
+                catch(Exception e)
+                {
+                    System.out.println("Error: " + e.getMessage());
+                }
+
+
+
+                System.out.println("-ODJAVI SE - 0\n-PRIKAZI SPISAK RADOVA 1\n-OCENI RAD 2");
+
             }
 
         }
             Metode.glavniMeni();
+    }
+
+    private static void oceniRad(Takmicar t) {
+        try
+        {
+
+
+            baza = DB.getInstance();
+            con = (Connection) baza.getConnection();
+            stmt = (Statement) con.createStatement();
+            upit = "UPDATE takmicar SET kvalitetKoda="+t.getKvalitetKoda()+", tacnost="+t.getTacnost()+", opstiUtisak="+t.getOpstiUtisak()+", ocena="+t.getOcena()+", ocenjen='da' WHERE ime='"+t.getIme()+"';";
+            stmt.executeUpdate(upit);
+            System.out.println("Ocene unete u bazu...");
+        }
+        catch(Exception e)
+        {
+            System.out.println("Greska pri ocenjivanju... " + e.getMessage());
+        }
+        finally {
+            baza.putConnection(con);
+        }
+
     }
 }
