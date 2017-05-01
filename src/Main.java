@@ -16,7 +16,6 @@ public class Main {
 
             }
             if (izbor == 2) {
-                //System.out.println("//PROGRAMMING IN PROCESS...\nchoose 0 or 1");
                 Metode.listAllStudents();
             }
 

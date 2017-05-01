@@ -207,4 +207,97 @@ public class Metode {
         }
 
     }
+
+    public static void ekranAdministratora(Administrator a) {
+        System.out.println("Dobrodosao " + a.getIme());
+
+        System.out.println("-ODJAVI SE - 0\n-DODAJ TAKMICARA 1\n-DODAJ CLANA KOMISIJE 2\n-OBRISI KORISNIKA 3");
+        int izbor;
+        while((izbor =scan.nextInt()) !=0)
+        {
+            System.out.println("Unesite ime: ");
+            String ime = scan.next();
+            System.out.println("Unesite pass: ");
+
+            String pass = scan.next();
+            if(izbor == 1)
+            {
+                try
+                {
+                baza = DB.getInstance();
+                con = (Connection) baza.getConnection();
+                stmt = (Statement) con.createStatement();
+                upit = "INSERT INTO `takmicar` (`id`,`ime`, `pass`) VALUES (NULL,'"+ime+"', '"+pass+"');";
+                stmt.executeUpdate(upit);
+                    System.out.println("Takmicar "+ ime + " uspesno dodat");
+                }
+                catch(Exception e)
+                {
+                    System.out.println("Greska pri dodavanju novog korisnika... " + e.getMessage());
+                }
+                System.out.println("-ODJAVI SE - 0\n-DODAJ TAKMICARA 1\n-DODAJ CLANA KOMISIJE 2\n-OBRISI KORISNIKA 3");
+
+            }
+           else if(izbor == 2)
+            {
+                try
+                {
+                    baza = DB.getInstance();
+                    con = (Connection) baza.getConnection();
+                    stmt = (Statement) con.createStatement();
+                    upit = "INSERT INTO `komisija` (`id`,`ime`, `pass`) VALUES (NULL,'"+ime+"', '"+pass+"');";
+                    stmt.executeUpdate(upit);
+                    System.out.println("Komisija "+ ime + " uspesno dodat");
+
+                }
+                catch(Exception e)
+                {
+                    System.out.println("Greska pri dodavanju novog korisnika... " + e.getMessage());
+                }
+                System.out.println("-ODJAVI SE - 0\n-DODAJ TAKMICARA 1\n-DODAJ CLANA KOMISIJE 2\n-OBRISI KORISNIKA 3");
+
+            }
+            else if(izbor == 3)
+            {
+                if(ime.charAt(0) == 't')
+                {
+                    try
+                    {
+                        baza = DB.getInstance();
+                        con = (Connection) baza.getConnection();
+                        stmt = (Statement) con.createStatement();
+                        upit = "DELETE FROM takmicar WHERE ime='"+ime+"';";
+                        stmt.executeUpdate(upit);
+                        System.out.println("Takmicar "+ ime + " uspesno obrisan");
+
+                    }
+                    catch(Exception e)
+                    {
+                        System.out.println("Greska pri dodavanju novog korisnika... " + e.getMessage());
+                    }
+
+                }
+                else if (ime.charAt(0) == 'k'){
+                    try
+                    {
+                        baza = DB.getInstance();
+                        con = (Connection) baza.getConnection();
+                        stmt = (Statement) con.createStatement();
+                        upit = "DELETE FROM komisija WHERE ime='"+ime+"';";
+                        stmt.executeUpdate(upit);
+                        System.out.println("Komisija "+ ime + " uspesno obrisan");
+
+                    }
+                    catch(Exception e)
+                    {
+                        System.out.println("Greska pri dodavanju novog korisnika... " + e.getMessage());
+                    }
+                }
+                System.out.println("-ODJAVI SE - 0\n-DODAJ TAKMICARA 1\n-DODAJ CLANA KOMISIJE 2\n-OBRISI KORISNIKA 3");
+
+            }
+
+        }
+        Metode.glavniMeni();
+    }
 }
